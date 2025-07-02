@@ -1,0 +1,1911 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Oncology Care Center</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: { primary: "#4299e1", secondary: "#90cdf4" },
+            borderRadius: {
+              none: "0px",
+              sm: "4px",
+              DEFAULT: "8px",
+              md: "12px",
+              lg: "16px",
+              xl: "20px",
+              "2xl": "24px",
+              "3xl": "32px",
+              full: "9999px",
+              button: "8px",
+            },
+          },
+        },
+      };
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css"
+    />
+    <style>
+      :where([class^="ri-"])::before { content: "\f3c2"; }
+      body {
+      font-family: 'Inter', sans-serif;
+      }
+      .hero-gradient {
+      background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.9) 50%, rgba(255,255,255,0) 100%);
+      }
+      .scale-hover:hover {
+      transform: scale(1.03);
+      box-shadow: 0 10px 25px -5px rgba(66, 153, 225, 0.15), 0 10px 10px -5px rgba(66, 153, 225, 0.1);
+      }
+      .scale-hover {
+      transition: all 0.3s ease;
+      }
+      .glow-hover:hover {
+      box-shadow: 0 0 15px rgba(66, 153, 225, 0.5);
+      }
+      .treatment-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+      }
+      .treatment-card {
+      transition: all 0.3s ease;
+      }
+      .faq-item {
+      transition: all 0.3s ease;
+      }
+      .faq-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+      }
+      .faq-content.active {
+      max-height: 500px;
+      }
+      input:focus, textarea:focus {
+      outline: none;
+      border-color: #4299e1;
+      }
+      .testimonial-card {
+      transition: opacity 0.5s ease;
+      }
+    </style>
+  </head>
+  <body class="bg-white">
+    <!-- Header -->
+    <header class="fixed w-full bg-white bg-opacity-95 shadow-sm z-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center py-4">
+          <div class="flex items-center">
+            <h1 class="text-2xl font-['Pacifico'] text-primary">logo</h1>
+          </div>
+          <nav class="hidden md:flex space-x-8">
+            <a href="#" class="text-gray-700 hover:text-primary font-medium"
+              >Home</a
+            >
+            <a
+              href="#about"
+              class="text-gray-700 hover:text-primary font-medium"
+              >About</a
+            >
+            <a
+              href="#treatments"
+              class="text-gray-700 hover:text-primary font-medium"
+              >Treatments</a
+            >
+            <a
+              href="#doctors"
+              class="text-gray-700 hover:text-primary font-medium"
+              >Our Doctors</a
+            >
+            <a
+              href="#testimonials"
+              class="text-gray-700 hover:text-primary font-medium"
+              >Testimonials</a
+            >
+            <a href="#blog" class="text-gray-700 hover:text-primary font-medium"
+              >Blog</a
+            >
+          </nav>
+          <div class="flex items-center">
+            <button
+              id="headerBookBtn"
+              class="hidden md:block bg-primary text-white px-6 py-2 rounded-button font-medium hover:bg-primary/90 transition whitespace-nowrap"
+            >
+              Book Appointment
+            </button>
+            <div
+              id="appointmentModal"
+              class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center"
+            >
+              <div class="bg-white rounded-lg w-full max-w-xl mx-4 relative">
+                <button
+                  id="closeModal"
+                  class="absolute right-4 top-4 text-gray-500 hover:text-gray-700"
+                >
+                  <i class="ri-close-line ri-lg"></i>
+                </button>
+                <div class="p-8">
+                  <h3 class="text-2xl font-bold text-gray-900 mb-6">
+                    Schedule an Appointment
+                  </h3>
+                  <form id="appointmentForm" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div>
+                        <label
+                          for="modalName"
+                          class="block text-sm font-medium text-gray-700 mb-1"
+                          >Full Name</label
+                        >
+                        <input
+                          type="text"
+                          id="modalName"
+                          name="name"
+                          required
+                          class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                          placeholder="John Smith"
+                        />
+                      </div>
+                      <div>
+                        <label
+                          for="modalEmail"
+                          class="block text-sm font-medium text-gray-700 mb-1"
+                          >Email Address</label
+                        >
+                        <input
+                          type="email"
+                          id="modalEmail"
+                          name="email"
+                          required
+                          class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                          placeholder="john@example.com"
+                        />
+                      </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div>
+                        <label
+                          for="modalPhone"
+                          class="block text-sm font-medium text-gray-700 mb-1"
+                          >Phone Number</label
+                        >
+                        <input
+                          type="tel"
+                          id="modalPhone"
+                          name="phone"
+                          required
+                          class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                          placeholder="(123) 456-7890"
+                        />
+                      </div>
+                      <div>
+                        <label
+                          for="modalDate"
+                          class="block text-sm font-medium text-gray-700 mb-1"
+                          >Preferred Date</label
+                        >
+                        <input
+                          type="date"
+                          id="modalDate"
+                          name="date"
+                          required
+                          class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                        />
+                      </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div>
+                        <label
+                          for="modalTime"
+                          class="block text-sm font-medium text-gray-700 mb-1"
+                          >Preferred Time</label
+                        >
+                        <select
+                          id="modalTime"
+                          name="time"
+                          required
+                          class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                        >
+                          <option value="" disabled selected>
+                            Select time
+                          </option>
+                          <option value="morning">Morning (9AM - 12PM)</option>
+                          <option value="afternoon">
+                            Afternoon (1PM - 4PM)
+                          </option>
+                          <option value="evening">Evening (4PM - 6PM)</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label
+                          for="modalDoctor"
+                          class="block text-sm font-medium text-gray-700 mb-1"
+                          >Preferred Doctor</label
+                        >
+                        <select
+                          id="modalDoctor"
+                          name="doctor"
+                          class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                        >
+                          <option value="" disabled selected>
+                            Select doctor (optional)
+                          </option>
+                          <option value="dr-williams">
+                            Dr. Robert Williams
+                          </option>
+                          <option value="dr-chen">Dr. Sarah Chen</option>
+                          <option value="dr-thompson">
+                            Dr. Michael Thompson
+                          </option>
+                          <option value="dr-patel">Dr. Jessica Patel</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div>
+                      <label
+                        for="modalReason"
+                        class="block text-sm font-medium text-gray-700 mb-1"
+                        >Reason for Visit</label
+                      >
+                      <textarea
+                        id="modalReason"
+                        name="reason"
+                        required
+                        rows="3"
+                        class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                        placeholder="Please briefly describe your reason for visit"
+                      ></textarea>
+                    </div>
+                    <div class="flex justify-end space-x-4">
+                      <button
+                        type="button"
+                        id="cancelBtn"
+                        class="px-6 py-2 border border-gray-300 rounded-button text-gray-700 hover:bg-gray-50 transition whitespace-nowrap"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type="submit"
+                        class="bg-primary text-white px-6 py-2 rounded-button font-medium hover:bg-primary/90 transition whitespace-nowrap"
+                      >
+                        Submit Request
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <div
+              id="confirmationModal"
+              class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center"
+            >
+              <div
+                class="bg-white rounded-lg w-full max-w-md mx-4 p-8 text-center"
+              >
+                <div
+                  class="w-16 h-16 mx-auto mb-4 flex items-center justify-center text-primary bg-primary/10 rounded-full"
+                >
+                  <i class="ri-check-line ri-2x"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-900 mb-2">
+                  Appointment Request Sent!
+                </h3>
+                <p class="text-gray-700 mb-6">
+                  We'll contact you shortly to confirm your appointment details.
+                </p>
+                <button
+                  id="confirmationCloseBtn"
+                  class="bg-primary text-white px-6 py-2 rounded-button font-medium hover:bg-primary/90 transition whitespace-nowrap"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+            <button
+              class="md:hidden w-10 h-10 flex items-center justify-center text-gray-700"
+            >
+              <i class="ri-menu-line ri-lg"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+    <!-- Hero Section -->
+    <section
+      class="relative pt-24 overflow-hidden"
+      style="background-image: url('https://readdy.ai/api/search-image?query=professional%20medical%20office%20with%20modern%20medical%20equipment%2C%20soft%20blue%20tones%2C%20clean%20environment%2C%20bright%20and%20airy%20medical%20clinic%2C%20high-end%20medical%20facility%20with%20advanced%20technology%2C%20minimalist%20design&width=1920&height=800&seq=1&orientation=landscape'); background-size: cover; background-position: center;"
+    >
+      <div
+        class="absolute inset-0 bg-gradient-to-r from-white via-white/90 to-transparent"
+      ></div>
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="flex flex-col md:flex-row items-center py-16 md:py-24">
+          <div class="w-full md:w-1/2 pr-0 md:pr-12 mb-12 md:mb-0">
+            <h1
+              class="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight"
+            >
+              Expert <span class="text-primary">Oncology Care</span> for Your
+              Health Journey
+            </h1>
+            <p class="mt-6 text-lg text-gray-700 max-w-xl">
+              Compassionate and personalized cancer treatment from a team of
+              specialists dedicated to your well-being and recovery.
+            </p>
+            <div class="mt-8 flex flex-col sm:flex-row gap-4">
+              <button
+                id="heroBookBtn"
+                class="bg-primary text-white px-8 py-3 rounded-button font-medium hover:bg-primary/90 transition shadow-lg hover:shadow-xl hover:shadow-primary/20 whitespace-nowrap scale-hover"
+              >
+                Book Appointment
+              </button>
+              <button
+                class="bg-white text-primary border border-primary px-8 py-3 rounded-button font-medium hover:bg-gray-50 transition whitespace-nowrap"
+              >
+                Learn More
+              </button>
+            </div>
+            <div class="mt-8 flex items-center">
+              <div class="flex -space-x-2">
+                <img
+                  class="w-10 h-10 rounded-full border-2 border-white"
+                  src="https://readdy.ai/api/search-image?query=professional%20headshot%20of%20a%20female%20doctor%20with%20stethoscope%2C%20medical%20professional%20portrait%2C%20clean%20background%2C%20soft%20lighting&width=100&height=100&seq=2&orientation=squarish"
+                  alt="Doctor"
+                />
+                <img
+                  class="w-10 h-10 rounded-full border-2 border-white"
+                  src="https://readdy.ai/api/search-image?query=professional%20headshot%20of%20a%20male%20doctor%20with%20stethoscope%2C%20medical%20professional%20portrait%2C%20clean%20background%2C%20soft%20lighting&width=100&height=100&seq=3&orientation=squarish"
+                  alt="Doctor"
+                />
+                <img
+                  class="w-10 h-10 rounded-full border-2 border-white"
+                  src="https://readdy.ai/api/search-image?query=professional%20headshot%20of%20a%20female%20doctor%20with%20stethoscope%2C%20medical%20professional%20portrait%2C%20clean%20background%2C%20soft%20lighting&width=100&height=100&seq=4&orientation=squarish"
+                  alt="Doctor"
+                />
+              </div>
+              <div class="ml-4">
+                <p class="text-sm font-medium text-gray-900">
+                  Trusted by 10,000+ patients
+                </p>
+                <div class="flex text-primary">
+                  <i class="ri-star-fill"></i>
+                  <i class="ri-star-fill"></i>
+                  <i class="ri-star-fill"></i>
+                  <i class="ri-star-fill"></i>
+                  <i class="ri-star-fill"></i>
+                  <span class="ml-1 text-sm text-gray-600">4.9/5</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="w-full md:w-1/2 flex justify-center">
+            <!-- This div is intentionally empty as the background image is already set -->
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Trust Indicators -->
+    <section class="bg-gray-50 py-10">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+          <div class="flex flex-col items-center">
+            <div
+              class="w-16 h-16 flex items-center justify-center text-primary mb-3"
+            >
+              <i class="ri-user-heart-line ri-2x"></i>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900">15+ Years</h3>
+            <p class="text-gray-600 text-center">Experience</p>
+          </div>
+          <div class="flex flex-col items-center">
+            <div
+              class="w-16 h-16 flex items-center justify-center text-primary mb-3"
+            >
+              <i class="ri-team-line ri-2x"></i>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900">10,000+</h3>
+            <p class="text-gray-600 text-center">Patients Treated</p>
+          </div>
+          <div class="flex flex-col items-center">
+            <div
+              class="w-16 h-16 flex items-center justify-center text-primary mb-3"
+            >
+              <i class="ri-hospital-line ri-2x"></i>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900">5 Specialized</h3>
+            <p class="text-gray-600 text-center">Treatment Centers</p>
+          </div>
+          <div class="flex flex-col items-center">
+            <div
+              class="w-16 h-16 flex items-center justify-center text-primary mb-3"
+            >
+              <i class="ri-award-line ri-2x"></i>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900">20+ Awards</h3>
+            <p class="text-gray-600 text-center">For Excellence</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-white">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col md:flex-row items-center gap-12">
+          <div class="w-full md:w-1/2">
+            <img
+              src="https://readdy.ai/api/search-image?query=modern%20medical%20oncology%20clinic%20with%20doctors%20in%20consultation%2C%20bright%20clean%20medical%20office%2C%20doctors%20reviewing%20medical%20scans%2C%20professional%20healthcare%20environment%2C%20soft%20blue%20tones&width=600&height=500&seq=5&orientation=landscape"
+              alt="About Our Clinic"
+              class="rounded-lg shadow-xl w-full h-auto object-cover"
+            />
+          </div>
+          <div class="w-full md:w-1/2">
+            <h2 class="text-3xl font-bold text-gray-900 mb-6">
+              About Our <span class="text-primary">Oncology Center</span>
+            </h2>
+            <p class="text-gray-700 mb-6">
+              Founded in 2010, our oncology center has been at the forefront of
+              cancer care, combining cutting-edge technology with compassionate
+              treatment approaches. Our team of specialists is dedicated to
+              providing personalized care for each patient.
+            </p>
+            <div class="space-y-4 mb-8">
+              <div class="flex items-start">
+                <div
+                  class="w-6 h-6 flex items-center justify-center text-primary mt-1 mr-3"
+                >
+                  <i class="ri-check-line ri-lg"></i>
+                </div>
+                <p class="text-gray-700">
+                  Personalized treatment plans tailored to each patient's
+                  specific needs
+                </p>
+              </div>
+              <div class="flex items-start">
+                <div
+                  class="w-6 h-6 flex items-center justify-center text-primary mt-1 mr-3"
+                >
+                  <i class="ri-check-line ri-lg"></i>
+                </div>
+                <p class="text-gray-700">
+                  Access to the latest clinical trials and innovative therapies
+                </p>
+              </div>
+              <div class="flex items-start">
+                <div
+                  class="w-6 h-6 flex items-center justify-center text-primary mt-1 mr-3"
+                >
+                  <i class="ri-check-line ri-lg"></i>
+                </div>
+                <p class="text-gray-700">
+                  Comprehensive support services including nutrition,
+                  counseling, and rehabilitation
+                </p>
+              </div>
+              <div class="flex items-start">
+                <div
+                  class="w-6 h-6 flex items-center justify-center text-primary mt-1 mr-3"
+                >
+                  <i class="ri-check-line ri-lg"></i>
+                </div>
+                <p class="text-gray-700">
+                  Multidisciplinary team approach for optimal treatment outcomes
+                </p>
+              </div>
+            </div>
+            <button
+              class="bg-primary text-white px-8 py-3 rounded-button font-medium hover:bg-primary/90 transition whitespace-nowrap scale-hover"
+            >
+              Learn More About Us
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Treatments Section -->
+    <section id="treatments" class="py-20 bg-gray-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+          <h2 class="text-3xl font-bold text-gray-900 mb-4">
+            Our Specialized <span class="text-primary">Cancer Treatments</span>
+          </h2>
+          <p class="text-gray-700 max-w-2xl mx-auto">
+            We offer comprehensive care for various types of cancer with
+            personalized treatment plans using the latest medical advancements
+            and technologies.
+          </p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <!-- Treatment Card 1 -->
+          <div
+            class="bg-white rounded-lg shadow-md overflow-hidden treatment-card"
+          >
+            <div class="h-48 overflow-hidden">
+              <img
+                src="https://readdy.ai/api/search-image?query=lung%20cancer%20medical%20scan%2C%20CT%20scan%20of%20lungs%2C%20medical%20imaging%20of%20lungs%2C%20professional%20medical%20diagnostic%20image%2C%20high%20resolution%20medical%20scan%20with%20clean%20background&width=400&height=250&seq=6&orientation=landscape"
+                alt="Lung Cancer Treatment"
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <div class="p-6">
+              <div
+                class="w-12 h-12 flex items-center justify-center text-primary bg-primary/10 rounded-full mb-4"
+              >
+                <i class="ri-lungs-line ri-lg"></i>
+              </div>
+              <h3 class="text-xl font-semibold text-gray-900 mb-2">
+                Lung Cancer
+              </h3>
+              <p class="text-gray-700 mb-4">
+                Comprehensive treatment options including surgery, radiation
+                therapy, chemotherapy, and targeted molecular therapies for all
+                stages of lung cancer.
+              </p>
+              <a href="#" class="text-primary font-medium flex items-center">
+                Learn More
+                <i class="ri-arrow-right-line ml-2"></i>
+              </a>
+            </div>
+          </div>
+          <!-- Treatment Card 2 -->
+          <div
+            class="bg-white rounded-lg shadow-md overflow-hidden treatment-card"
+          >
+            <div class="h-48 overflow-hidden">
+              <img
+                src="https://readdy.ai/api/search-image?query=breast%20cancer%20screening%2C%20mammogram%2C%20medical%20imaging%20of%20breast%20tissue%2C%20professional%20medical%20diagnostic%20image%2C%20high%20resolution%20medical%20scan%20with%20clean%20background&width=400&height=250&seq=7&orientation=landscape"
+                alt="Breast Cancer Treatment"
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <div class="p-6">
+              <div
+                class="w-12 h-12 flex items-center justify-center text-primary bg-primary/10 rounded-full mb-4"
+              >
+                <i class="ri-ribbon-line ri-lg"></i>
+              </div>
+              <h3 class="text-xl font-semibold text-gray-900 mb-2">
+                Breast Cancer
+              </h3>
+              <p class="text-gray-700 mb-4">
+                Personalized breast cancer care including advanced surgical
+                techniques, hormone therapy, radiation, and reconstruction
+                options.
+              </p>
+              <a href="#" class="text-primary font-medium flex items-center">
+                Learn More
+                <i class="ri-arrow-right-line ml-2"></i>
+              </a>
+            </div>
+          </div>
+          <!-- Treatment Card 3 -->
+          <div
+            class="bg-white rounded-lg shadow-md overflow-hidden treatment-card"
+          >
+            <div class="h-48 overflow-hidden">
+              <img
+                src="https://readdy.ai/api/search-image?query=blood%20cancer%20cells%2C%20leukemia%20cells%20under%20microscope%2C%20medical%20imaging%20of%20blood%20cells%2C%20professional%20medical%20diagnostic%20image%2C%20high%20resolution%20medical%20scan%20with%20clean%20background&width=400&height=250&seq=8&orientation=landscape"
+                alt="Blood Cancer Treatment"
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <div class="p-6">
+              <div
+                class="w-12 h-12 flex items-center justify-center text-primary bg-primary/10 rounded-full mb-4"
+              >
+                <i class="ri-drop-line ri-lg"></i>
+              </div>
+              <h3 class="text-xl font-semibold text-gray-900 mb-2">
+                Blood Cancer
+              </h3>
+              <p class="text-gray-700 mb-4">
+                Specialized care for leukemia, lymphoma, and myeloma with
+                advanced treatments including stem cell transplantation and
+                immunotherapies.
+              </p>
+              <a href="#" class="text-primary font-medium flex items-center">
+                Learn More
+                <i class="ri-arrow-right-line ml-2"></i>
+              </a>
+            </div>
+          </div>
+          <!-- Treatment Card 4 -->
+          <div
+            class="bg-white rounded-lg shadow-md overflow-hidden treatment-card"
+          >
+            <div class="h-48 overflow-hidden">
+              <img
+                src="https://readdy.ai/api/search-image?query=prostate%20cancer%20scan%2C%20medical%20imaging%20of%20prostate%2C%20professional%20medical%20diagnostic%20image%2C%20high%20resolution%20medical%20scan%20with%20clean%20background&width=400&height=250&seq=9&orientation=landscape"
+                alt="Prostate Cancer Treatment"
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <div class="p-6">
+              <div
+                class="w-12 h-12 flex items-center justify-center text-primary bg-primary/10 rounded-full mb-4"
+              >
+                <i class="ri-men-line ri-lg"></i>
+              </div>
+              <h3 class="text-xl font-semibold text-gray-900 mb-2">
+                Prostate Cancer
+              </h3>
+              <p class="text-gray-700 mb-4">
+                Advanced diagnostic and treatment options including robotic
+                surgery, radiation therapy, and hormone therapy for prostate
+                cancer.
+              </p>
+              <a href="#" class="text-primary font-medium flex items-center">
+                Learn More
+                <i class="ri-arrow-right-line ml-2"></i>
+              </a>
+            </div>
+          </div>
+          <!-- Treatment Card 5 -->
+          <div
+            class="bg-white rounded-lg shadow-md overflow-hidden treatment-card"
+          >
+            <div class="h-48 overflow-hidden">
+              <img
+                src="https://readdy.ai/api/search-image?query=colon%20cancer%20scan%2C%20colonoscopy%20image%2C%20medical%20imaging%20of%20colon%2C%20professional%20medical%20diagnostic%20image%2C%20high%20resolution%20medical%20scan%20with%20clean%20background&width=400&height=250&seq=10&orientation=landscape"
+                alt="Colon Cancer Treatment"
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <div class="p-6">
+              <div
+                class="w-12 h-12 flex items-center justify-center text-primary bg-primary/10 rounded-full mb-4"
+              >
+                <i class="ri-surgical-mask-line ri-lg"></i>
+              </div>
+              <h3 class="text-xl font-semibold text-gray-900 mb-2">
+                Colon Cancer
+              </h3>
+              <p class="text-gray-700 mb-4">
+                Comprehensive colorectal cancer care including minimally
+                invasive surgery, chemotherapy, and targeted biological
+                therapies.
+              </p>
+              <a href="#" class="text-primary font-medium flex items-center">
+                Learn More
+                <i class="ri-arrow-right-line ml-2"></i>
+              </a>
+            </div>
+          </div>
+          <!-- Treatment Card 6 -->
+          <div
+            class="bg-white rounded-lg shadow-md overflow-hidden treatment-card"
+          >
+            <div class="h-48 overflow-hidden">
+              <img
+                src="https://readdy.ai/api/search-image?query=genetic%20counseling%20session%2C%20doctor%20discussing%20genetic%20test%20results%20with%20patient%2C%20medical%20consultation%2C%20professional%20healthcare%20setting%20with%20clean%20background&width=400&height=250&seq=11&orientation=landscape"
+                alt="Genetic Counseling"
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <div class="p-6">
+              <div
+                class="w-12 h-12 flex items-center justify-center text-primary bg-primary/10 rounded-full mb-4"
+              >
+                <i class="ri-dna-line ri-lg"></i>
+              </div>
+              <h3 class="text-xl font-semibold text-gray-900 mb-2">
+                Genetic Counseling
+              </h3>
+              <p class="text-gray-700 mb-4">
+                Expert guidance on hereditary cancer risks, genetic testing
+                options, and personalized prevention strategies for high-risk
+                individuals.
+              </p>
+              <a href="#" class="text-primary font-medium flex items-center">
+                Learn More
+                <i class="ri-arrow-right-line ml-2"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="text-center mt-12">
+          <button
+            class="bg-white text-primary border border-primary px-8 py-3 rounded-button font-medium hover:bg-gray-50 transition whitespace-nowrap"
+          >
+            View All Treatments
+          </button>
+        </div>
+      </div>
+    </section>
+    <!-- Therapies Section -->
+    <section class="py-20 bg-white">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+          <h2 class="text-3xl font-bold text-gray-900 mb-4">
+            Advanced <span class="text-primary">Therapy Options</span>
+          </h2>
+          <p class="text-gray-700 max-w-2xl mx-auto">
+            We provide cutting-edge therapeutic approaches tailored to each
+            patient's unique cancer profile for optimal treatment outcomes.
+          </p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <!-- Therapy Card 1 -->
+          <div class="bg-gray-50 rounded-lg p-6 scale-hover">
+            <div
+              class="w-14 h-14 flex items-center justify-center text-primary bg-white rounded-full shadow-sm mb-6"
+            >
+              <i class="ri-medicine-bottle-line ri-lg"></i>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 mb-3">
+              Chemotherapy
+            </h3>
+            <p class="text-gray-700">
+              State-of-the-art chemotherapy protocols with advanced medications
+              and supportive care to minimize side effects and maximize
+              effectiveness.
+            </p>
+          </div>
+          <!-- Therapy Card 2 -->
+          <div class="bg-gray-50 rounded-lg p-6 scale-hover">
+            <div
+              class="w-14 h-14 flex items-center justify-center text-primary bg-white rounded-full shadow-sm mb-6"
+            >
+              <i class="ri-microscope-line ri-lg"></i>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 mb-3">
+              Immunotherapy
+            </h3>
+            <p class="text-gray-700">
+              Cutting-edge immunotherapy treatments that harness your body's
+              immune system to identify and attack cancer cells more
+              effectively.
+            </p>
+          </div>
+          <!-- Therapy Card 3 -->
+          <div class="bg-gray-50 rounded-lg p-6 scale-hover">
+            <div
+              class="w-14 h-14 flex items-center justify-center text-primary bg-white rounded-full shadow-sm mb-6"
+            >
+              <i class="ri-focus-3-line ri-lg"></i>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 mb-3">
+              Targeted Therapy
+            </h3>
+            <p class="text-gray-700">
+              Precision medicine approaches that target specific genetic
+              mutations and molecular pathways involved in cancer growth.
+            </p>
+          </div>
+          <!-- Therapy Card 4 -->
+          <div class="bg-gray-50 rounded-lg p-6 scale-hover">
+            <div
+              class="w-14 h-14 flex items-center justify-center text-primary bg-white rounded-full shadow-sm mb-6"
+            >
+              <i class="ri-capsule-line ri-lg"></i>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 mb-3">
+              Hormonal Therapy
+            </h3>
+            <p class="text-gray-700">
+              Specialized treatments that block or alter hormone production and
+              action for hormone-sensitive cancers like breast and prostate
+              cancer.
+            </p>
+          </div>
+          <!-- Therapy Card 5 -->
+          <div class="bg-gray-50 rounded-lg p-6 scale-hover">
+            <div
+              class="w-14 h-14 flex items-center justify-center text-primary bg-white rounded-full shadow-sm mb-6"
+            >
+              <i class="ri-radar-line ri-lg"></i>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 mb-3">
+              Radiation Therapy
+            </h3>
+            <p class="text-gray-700">
+              Advanced radiation techniques including IMRT, SBRT, and proton
+              therapy that precisely target tumors while sparing healthy tissue.
+            </p>
+          </div>
+          <!-- Therapy Card 6 -->
+          <div class="bg-gray-50 rounded-lg p-6 scale-hover">
+            <div
+              class="w-14 h-14 flex items-center justify-center text-primary bg-white rounded-full shadow-sm mb-6"
+            >
+              <i class="ri-heart-pulse-line ri-lg"></i>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 mb-3">
+              Preventive Medicine
+            </h3>
+            <p class="text-gray-700">
+              Comprehensive cancer prevention strategies including screening
+              programs, lifestyle modifications, and risk-reduction therapies.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Doctors Section -->
+    <section id="doctors" class="py-20 bg-gray-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+          <h2 class="text-3xl font-bold text-gray-900 mb-4">
+            Our Expert <span class="text-primary">Oncologists</span>
+          </h2>
+          <p class="text-gray-700 max-w-2xl mx-auto">
+            Meet our team of board-certified oncology specialists with extensive
+            experience in treating various types of cancer.
+          </p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <!-- Doctor 1 -->
+          <div
+            class="bg-white rounded-lg shadow-md overflow-hidden scale-hover"
+          >
+            <div class="h-64 overflow-hidden">
+              <img
+                src="https://readdy.ai/api/search-image?query=professional%20headshot%20of%20a%20middle-aged%20male%20doctor%20wearing%20white%20coat%20and%20stethoscope%2C%20medical%20professional%20portrait%20with%20clean%20background%2C%20soft%20lighting%2C%20confident%20expression&width=300&height=400&seq=12&orientation=portrait"
+                alt="Dr. Robert Williams"
+                class="w-full h-full object-cover object-top"
+              />
+            </div>
+            <div class="p-6">
+              <h3 class="text-xl font-semibold text-gray-900">
+                Dr. Robert Williams
+              </h3>
+              <p class="text-primary font-medium mb-2">Medical Oncologist</p>
+              <p class="text-gray-600 text-sm mb-4">
+                Specializing in lung and gastrointestinal cancers with 15+ years
+                of experience.
+              </p>
+              <div class="flex justify-between items-center">
+                <button
+                  class="text-primary font-medium flex items-center text-sm"
+                >
+                  View Profile
+                  <i class="ri-arrow-right-line ml-1"></i>
+                </button>
+                <div class="flex space-x-2">
+                  <a
+                    href="#"
+                    class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-primary"
+                  >
+                    <i class="ri-linkedin-fill"></i>
+                  </a>
+                  <a
+                    href="#"
+                    class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-primary"
+                  >
+                    <i class="ri-twitter-fill"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Doctor 2 -->
+          <div
+            class="bg-white rounded-lg shadow-md overflow-hidden scale-hover"
+          >
+            <div class="h-64 overflow-hidden">
+              <img
+                src="https://readdy.ai/api/search-image?query=professional%20headshot%20of%20a%20female%20doctor%20in%20her%2040s%20wearing%20white%20coat%20and%20stethoscope%2C%20medical%20professional%20portrait%20with%20clean%20background%2C%20soft%20lighting%2C%20warm%20smile&width=300&height=400&seq=13&orientation=portrait"
+                alt="Dr. Sarah Chen"
+                class="w-full h-full object-cover object-top"
+              />
+            </div>
+            <div class="p-6">
+              <h3 class="text-xl font-semibold text-gray-900">
+                Dr. Sarah Chen
+              </h3>
+              <p class="text-primary font-medium mb-2">Surgical Oncologist</p>
+              <p class="text-gray-600 text-sm mb-4">
+                Expert in breast cancer surgery and minimally invasive
+                techniques.
+              </p>
+              <div class="flex justify-between items-center">
+                <button
+                  class="text-primary font-medium flex items-center text-sm"
+                >
+                  View Profile
+                  <i class="ri-arrow-right-line ml-1"></i>
+                </button>
+                <div class="flex space-x-2">
+                  <a
+                    href="#"
+                    class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-primary"
+                  >
+                    <i class="ri-linkedin-fill"></i>
+                  </a>
+                  <a
+                    href="#"
+                    class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-primary"
+                  >
+                    <i class="ri-twitter-fill"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Doctor 3 -->
+          <div
+            class="bg-white rounded-lg shadow-md overflow-hidden scale-hover"
+          >
+            <div class="h-64 overflow-hidden">
+              <img
+                src="https://readdy.ai/api/search-image?query=professional%20headshot%20of%20a%20male%20doctor%20in%20his%2050s%20wearing%20white%20coat%20and%20stethoscope%2C%20medical%20professional%20portrait%20with%20clean%20background%2C%20soft%20lighting%2C%20serious%20expression&width=300&height=400&seq=14&orientation=portrait"
+                alt="Dr. Michael Thompson"
+                class="w-full h-full object-cover object-top"
+              />
+            </div>
+            <div class="p-6">
+              <h3 class="text-xl font-semibold text-gray-900">
+                Dr. Michael Thompson
+              </h3>
+              <p class="text-primary font-medium mb-2">Radiation Oncologist</p>
+              <p class="text-gray-600 text-sm mb-4">
+                Specializing in advanced radiation techniques for brain and
+                spine tumors.
+              </p>
+              <div class="flex justify-between items-center">
+                <button
+                  class="text-primary font-medium flex items-center text-sm"
+                >
+                  View Profile
+                  <i class="ri-arrow-right-line ml-1"></i>
+                </button>
+                <div class="flex space-x-2">
+                  <a
+                    href="#"
+                    class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-primary"
+                  >
+                    <i class="ri-linkedin-fill"></i>
+                  </a>
+                  <a
+                    href="#"
+                    class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-primary"
+                  >
+                    <i class="ri-twitter-fill"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Doctor 4 -->
+          <div
+            class="bg-white rounded-lg shadow-md overflow-hidden scale-hover"
+          >
+            <div class="h-64 overflow-hidden">
+              <img
+                src="https://readdy.ai/api/search-image?query=professional%20headshot%20of%20a%20female%20doctor%20in%20her%2030s%20wearing%20white%20coat%20and%20stethoscope%2C%20medical%20professional%20portrait%20with%20clean%20background%2C%20soft%20lighting%2C%20friendly%20expression&width=300&height=400&seq=15&orientation=portrait"
+                alt="Dr. Jessica Patel"
+                class="w-full h-full object-cover object-top"
+              />
+            </div>
+            <div class="p-6">
+              <h3 class="text-xl font-semibold text-gray-900">
+                Dr. Jessica Patel
+              </h3>
+              <p class="text-primary font-medium mb-2">
+                Hematologist-Oncologist
+              </p>
+              <p class="text-gray-600 text-sm mb-4">
+                Expert in blood cancers and stem cell transplantation therapies.
+              </p>
+              <div class="flex justify-between items-center">
+                <button
+                  class="text-primary font-medium flex items-center text-sm"
+                >
+                  View Profile
+                  <i class="ri-arrow-right-line ml-1"></i>
+                </button>
+                <div class="flex space-x-2">
+                  <a
+                    href="#"
+                    class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-primary"
+                  >
+                    <i class="ri-linkedin-fill"></i>
+                  </a>
+                  <a
+                    href="#"
+                    class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-primary"
+                  >
+                    <i class="ri-twitter-fill"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="text-center mt-12">
+          <button
+            class="bg-white text-primary border border-primary px-8 py-3 rounded-button font-medium hover:bg-gray-50 transition whitespace-nowrap"
+          >
+            Meet Our Full Team
+          </button>
+        </div>
+      </div>
+    </section>
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="py-20 bg-white">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+          <h2 class="text-3xl font-bold text-gray-900 mb-4">
+            What Our <span class="text-primary">Patients Say</span>
+          </h2>
+          <p class="text-gray-700 max-w-2xl mx-auto">
+            Read about the experiences of patients who have received treatment
+            at our oncology center.
+          </p>
+        </div>
+        <div class="relative">
+          <div class="flex overflow-hidden" id="testimonial-container">
+            <!-- Testimonial 1 -->
+            <div
+              class="testimonial-card w-full md:w-1/2 lg:w-1/3 flex-shrink-0 px-4"
+            >
+              <div class="bg-gray-50 rounded-lg p-8 h-full">
+                <div class="flex mb-6">
+                  <i class="ri-double-quotes-l text-primary text-4xl"></i>
+                </div>
+                <p class="text-gray-700 mb-6">
+                  "The care I received during my breast cancer treatment was
+                  exceptional. Dr. Chen and her team were not only medically
+                  excellent but also compassionate and supportive throughout my
+                  entire journey. I'm now cancer-free for 3 years."
+                </p>
+                <div class="flex items-center">
+                  <img
+                    src="https://readdy.ai/api/search-image?query=portrait%20of%20middle-aged%20woman%20with%20short%20hair%2C%20cancer%20survivor%2C%20healthy%20looking%2C%20soft%20lighting%2C%20clean%20background&width=60&height=60&seq=16&orientation=squarish"
+                    alt="Patient"
+                    class="w-12 h-12 rounded-full mr-4"
+                  />
+                  <div>
+                    <h4 class="text-gray-900 font-medium">Elizabeth Morgan</h4>
+                    <p class="text-gray-600 text-sm">Breast Cancer Survivor</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Testimonial 2 -->
+            <div
+              class="testimonial-card w-full md:w-1/2 lg:w-1/3 flex-shrink-0 px-4"
+            >
+              <div class="bg-gray-50 rounded-lg p-8 h-full">
+                <div class="flex mb-6">
+                  <i class="ri-double-quotes-l text-primary text-4xl"></i>
+                </div>
+                <p class="text-gray-700 mb-6">
+                  "When I was diagnosed with stage 3 colon cancer, I was
+                  terrified. Dr. Williams explained everything clearly and
+                  developed a treatment plan that worked for me. The entire
+                  staff made a difficult time much easier to bear."
+                </p>
+                <div class="flex items-center">
+                  <img
+                    src="https://readdy.ai/api/search-image?query=portrait%20of%20senior%20man%20in%20his%2060s%2C%20cancer%20survivor%2C%20healthy%20looking%2C%20soft%20lighting%2C%20clean%20background&width=60&height=60&seq=17&orientation=squarish"
+                    alt="Patient"
+                    class="w-12 h-12 rounded-full mr-4"
+                  />
+                  <div>
+                    <h4 class="text-gray-900 font-medium">Richard Hernandez</h4>
+                    <p class="text-gray-600 text-sm">Colon Cancer Survivor</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Testimonial 3 -->
+            <div
+              class="testimonial-card w-full md:w-1/2 lg:w-1/3 flex-shrink-0 px-4"
+            >
+              <div class="bg-gray-50 rounded-lg p-8 h-full">
+                <div class="flex mb-6">
+                  <i class="ri-double-quotes-l text-primary text-4xl"></i>
+                </div>
+                <p class="text-gray-700 mb-6">
+                  "The immunotherapy treatment I received for my melanoma was
+                  life-changing. Dr. Patel's expertise in cutting-edge
+                  treatments gave me hope when I thought I had none. I'm
+                  grateful for the personalized care I received."
+                </p>
+                <div class="flex items-center">
+                  <img
+                    src="https://readdy.ai/api/search-image?query=portrait%20of%20young%20woman%20in%20her%2030s%2C%20cancer%20survivor%2C%20healthy%20looking%2C%20soft%20lighting%2C%20clean%20background&width=60&height=60&seq=18&orientation=squarish"
+                    alt="Patient"
+                    class="w-12 h-12 rounded-full mr-4"
+                  />
+                  <div>
+                    <h4 class="text-gray-900 font-medium">Samantha Wilson</h4>
+                    <p class="text-gray-600 text-sm">Melanoma Survivor</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Navigation Dots -->
+          <div class="flex justify-center mt-8">
+            <button
+              class="w-3 h-3 rounded-full bg-primary mx-1 testimonial-dot active"
+              data-index="0"
+            ></button>
+            <button
+              class="w-3 h-3 rounded-full bg-gray-300 mx-1 testimonial-dot"
+              data-index="1"
+            ></button>
+            <button
+              class="w-3 h-3 rounded-full bg-gray-300 mx-1 testimonial-dot"
+              data-index="2"
+            ></button>
+          </div>
+          <!-- Navigation Arrows -->
+          <button
+            class="absolute top-1/2 left-0 transform -translate-y-1/2 w-10 h-10 flex items-center justify-center bg-white rounded-full shadow-md text-gray-700 hover:text-primary z-10"
+            id="prev-testimonial"
+          >
+            <i class="ri-arrow-left-s-line ri-lg"></i>
+          </button>
+          <button
+            class="absolute top-1/2 right-0 transform -translate-y-1/2 w-10 h-10 flex items-center justify-center bg-white rounded-full shadow-md text-gray-700 hover:text-primary z-10"
+            id="next-testimonial"
+          >
+            <i class="ri-arrow-right-s-line ri-lg"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+    <!-- Appointment CTA Section -->
+    <section class="py-20 bg-primary/5 relative">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-white rounded-lg shadow-xl overflow-hidden">
+          <div class="flex flex-col md:flex-row">
+            <div class="w-full md:w-1/2 p-8 md:p-12">
+              <h2 class="text-3xl font-bold text-gray-900 mb-6">
+                Schedule Your <span class="text-primary">Consultation</span>
+              </h2>
+              <p class="text-gray-700 mb-8">
+                Take the first step towards comprehensive cancer care. Our team
+                of specialists is ready to provide personalized treatment plans
+                tailored to your needs.
+              </p>
+              <form class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label
+                      for="name"
+                      class="block text-sm font-medium text-gray-700 mb-1"
+                      >Full Name</label
+                    >
+                    <input
+                      type="text"
+                      id="name"
+                      class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                      placeholder="John Smith"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      for="email"
+                      class="block text-sm font-medium text-gray-700 mb-1"
+                      >Email Address</label
+                    >
+                    <input
+                      type="email"
+                      id="email"
+                      class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                      placeholder="john@example.com"
+                    />
+                  </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label
+                      for="phone"
+                      class="block text-sm font-medium text-gray-700 mb-1"
+                      >Phone Number</label
+                    >
+                    <input
+                      type="tel"
+                      id="phone"
+                      class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                      placeholder="(123) 456-7890"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      for="service"
+                      class="block text-sm font-medium text-gray-700 mb-1"
+                      >Service Needed</label
+                    >
+                    <div class="relative">
+                      <select
+                        id="service"
+                        class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-primary/20 focus:border-primary appearance-none pr-8"
+                      >
+                        <option value="" selected disabled>
+                          Select a service
+                        </option>
+                        <option value="consultation">
+                          Initial Consultation
+                        </option>
+                        <option value="second-opinion">Second Opinion</option>
+                        <option value="treatment">Treatment</option>
+                        <option value="follow-up">Follow-up Visit</option>
+                      </select>
+                      <div
+                        class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none"
+                      >
+                        <i class="ri-arrow-down-s-line text-gray-400"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <label
+                    for="message"
+                    class="block text-sm font-medium text-gray-700 mb-1"
+                    >Message (Optional)</label
+                  >
+                  <textarea
+                    id="message"
+                    rows="4"
+                    class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                    placeholder="Please provide any additional information about your condition or needs."
+                  ></textarea>
+                </div>
+                <button
+                  type="submit"
+                  class="w-full bg-primary text-white px-6 py-3 rounded-button font-medium hover:bg-primary/90 transition shadow-lg hover:shadow-xl hover:shadow-primary/20 whitespace-nowrap scale-hover"
+                >
+                  Book Your Appointment
+                </button>
+              </form>
+            </div>
+            <div
+              class="w-full md:w-1/2 bg-gray-100 p-8 md:p-12 flex flex-col justify-between"
+              style="background-image: url('https://readdy.ai/api/search-image?query=modern%20medical%20office%20reception%20area%2C%20clean%20waiting%20room%20with%20soft%20blue%20tones%2C%20professional%20healthcare%20environment%2C%20bright%20and%20welcoming%20medical%20clinic%20interior&width=600&height=800&seq=19&orientation=portrait'); background-size: cover; background-position: center;"
+            >
+              <div class="bg-white/90 rounded-lg p-6 backdrop-blur-sm">
+                <h3 class="text-xl font-semibold text-gray-900 mb-4">
+                  Contact Information
+                </h3>
+                <div class="space-y-4">
+                  <div class="flex items-start">
+                    <div
+                      class="w-10 h-10 flex items-center justify-center text-primary bg-primary/10 rounded-full mr-4 mt-1"
+                    >
+                      <i class="ri-map-pin-line ri-lg"></i>
+                    </div>
+                    <div>
+                      <p class="text-gray-900 font-medium">Address</p>
+                      <p class="text-gray-700">
+                        123 Medical Center Drive<br />Suite 200<br />New York,
+                        NY 10001
+                      </p>
+                    </div>
+                  </div>
+                  <div class="flex items-start">
+                    <div
+                      class="w-10 h-10 flex items-center justify-center text-primary bg-primary/10 rounded-full mr-4 mt-1"
+                    >
+                      <i class="ri-phone-line ri-lg"></i>
+                    </div>
+                    <div>
+                      <p class="text-gray-900 font-medium">Phone</p>
+                      <p class="text-gray-700">(212) 555-7890</p>
+                      <p class="text-gray-700">Emergency: (212) 555-9999</p>
+                    </div>
+                  </div>
+                  <div class="flex items-start">
+                    <div
+                      class="w-10 h-10 flex items-center justify-center text-primary bg-primary/10 rounded-full mr-4 mt-1"
+                    >
+                      <i class="ri-time-line ri-lg"></i>
+                    </div>
+                    <div>
+                      <p class="text-gray-900 font-medium">Hours</p>
+                      <p class="text-gray-700">
+                        Monday - Friday: 8:00 AM - 6:00 PM
+                      </p>
+                      <p class="text-gray-700">Saturday: 9:00 AM - 1:00 PM</p>
+                      <p class="text-gray-700">Sunday: Closed</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Blog Section -->
+    <section id="blog" class="py-20 bg-white">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+          <h2 class="text-3xl font-bold text-gray-900 mb-4">
+            Latest <span class="text-primary">Articles & News</span>
+          </h2>
+          <p class="text-gray-700 max-w-2xl mx-auto">
+            Stay informed with the latest research, treatment advances, and
+            cancer care information from our experts.
+          </p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <!-- Blog Post 1 -->
+          <div
+            class="bg-white rounded-lg shadow-md overflow-hidden scale-hover"
+          >
+            <div class="h-48 overflow-hidden">
+              <img
+                src="https://readdy.ai/api/search-image?query=doctor%20explaining%20medical%20scan%20to%20patient%2C%20oncologist%20consultation%2C%20medical%20professional%20reviewing%20test%20results%2C%20professional%20healthcare%20setting%20with%20clean%20background&width=400&height=250&seq=20&orientation=landscape"
+                alt="Blog Post"
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <div class="p-6">
+              <div class="flex items-center text-sm text-gray-500 mb-3">
+                <span class="flex items-center">
+                  <i class="ri-calendar-line mr-1"></i>
+                  May 3, 2025
+                </span>
+                <span class="mx-2">•</span>
+                <span class="flex items-center">
+                  <i class="ri-time-line mr-1"></i>
+                  5 min read
+                </span>
+              </div>
+              <h3 class="text-xl font-semibold text-gray-900 mb-3">
+                Advances in Immunotherapy: New Hope for Cancer Patients
+              </h3>
+              <p class="text-gray-700 mb-4">
+                Discover how the latest developments in immunotherapy are
+                transforming cancer treatment and improving patient outcomes.
+              </p>
+              <a href="#" class="text-primary font-medium flex items-center">
+                Read Article
+                <i class="ri-arrow-right-line ml-2"></i>
+              </a>
+            </div>
+          </div>
+          <!-- Blog Post 2 -->
+          <div
+            class="bg-white rounded-lg shadow-md overflow-hidden scale-hover"
+          >
+            <div class="h-48 overflow-hidden">
+              <img
+                src="https://readdy.ai/api/search-image?query=cancer%20patient%20in%20support%20group%2C%20cancer%20survivors%20meeting%2C%20emotional%20support%20for%20cancer%20patients%2C%20professional%20healthcare%20setting%20with%20clean%20background&width=400&height=250&seq=21&orientation=landscape"
+                alt="Blog Post"
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <div class="p-6">
+              <div class="flex items-center text-sm text-gray-500 mb-3">
+                <span class="flex items-center">
+                  <i class="ri-calendar-line mr-1"></i>
+                  April 28, 2025
+                </span>
+                <span class="mx-2">•</span>
+                <span class="flex items-center">
+                  <i class="ri-time-line mr-1"></i>
+                  4 min read
+                </span>
+              </div>
+              <h3 class="text-xl font-semibold text-gray-900 mb-3">
+                The Importance of Mental Health Support During Cancer Treatment
+              </h3>
+              <p class="text-gray-700 mb-4">
+                Learn about the psychological aspects of cancer care and how
+                emotional support can improve treatment outcomes.
+              </p>
+              <a href="#" class="text-primary font-medium flex items-center">
+                Read Article
+                <i class="ri-arrow-right-line ml-2"></i>
+              </a>
+            </div>
+          </div>
+          <!-- Blog Post 3 -->
+          <div
+            class="bg-white rounded-lg shadow-md overflow-hidden scale-hover"
+          >
+            <div class="h-48 overflow-hidden">
+              <img
+                src="https://readdy.ai/api/search-image?query=healthy%20food%20for%20cancer%20patients%2C%20nutritious%20meal%20preparation%2C%20cancer-fighting%20foods%2C%20professional%20healthcare%20setting%20with%20clean%20background&width=400&height=250&seq=22&orientation=landscape"
+                alt="Blog Post"
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <div class="p-6">
+              <div class="flex items-center text-sm text-gray-500 mb-3">
+                <span class="flex items-center">
+                  <i class="ri-calendar-line mr-1"></i>
+                  April 15, 2025
+                </span>
+                <span class="mx-2">•</span>
+                <span class="flex items-center">
+                  <i class="ri-time-line mr-1"></i>
+                  6 min read
+                </span>
+              </div>
+              <h3 class="text-xl font-semibold text-gray-900 mb-3">
+                Nutrition During Cancer Treatment: What You Need to Know
+              </h3>
+              <p class="text-gray-700 mb-4">
+                Expert advice on maintaining proper nutrition during cancer
+                treatment to support recovery and minimize side effects.
+              </p>
+              <a href="#" class="text-primary font-medium flex items-center">
+                Read Article
+                <i class="ri-arrow-right-line ml-2"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="text-center mt-12">
+          <button
+            class="bg-white text-primary border border-primary px-8 py-3 rounded-button font-medium hover:bg-gray-50 transition whitespace-nowrap"
+          >
+            View All Articles
+          </button>
+        </div>
+      </div>
+    </section>
+    <!-- FAQ Section -->
+    <section class="py-20 bg-gray-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+          <h2 class="text-3xl font-bold text-gray-900 mb-4">
+            Frequently Asked <span class="text-primary">Questions</span>
+          </h2>
+          <p class="text-gray-700 max-w-2xl mx-auto">
+            Find answers to common questions about cancer treatments,
+            appointments, and our services.
+          </p>
+        </div>
+        <div class="max-w-3xl mx-auto">
+          <div class="space-y-6" id="faq-container">
+            <!-- FAQ Item 1 -->
+            <div class="bg-white rounded-lg shadow-sm overflow-hidden faq-item">
+              <button
+                class="w-full flex justify-between items-center p-6 text-left focus:outline-none faq-toggle"
+              >
+                <h3 class="text-lg font-medium text-gray-900">
+                  What should I bring to my first appointment?
+                </h3>
+                <div
+                  class="w-6 h-6 flex items-center justify-center text-primary"
+                >
+                  <i class="ri-add-line ri-lg faq-icon-plus"></i>
+                  <i class="ri-subtract-line ri-lg faq-icon-minus hidden"></i>
+                </div>
+              </button>
+              <div class="faq-content px-6 pb-6">
+                <p class="text-gray-700">
+                  For your first appointment, please bring your medical records,
+                  imaging studies, pathology reports, a list of current
+                  medications, insurance information, and a form of
+                  identification. If possible, bring a family member or friend
+                  for support and to help remember important information.
+                </p>
+              </div>
+            </div>
+            <!-- FAQ Item 2 -->
+            <div class="bg-white rounded-lg shadow-sm overflow-hidden faq-item">
+              <button
+                class="w-full flex justify-between items-center p-6 text-left focus:outline-none faq-toggle"
+              >
+                <h3 class="text-lg font-medium text-gray-900">
+                  How long does a typical treatment plan last?
+                </h3>
+                <div
+                  class="w-6 h-6 flex items-center justify-center text-primary"
+                >
+                  <i class="ri-add-line ri-lg faq-icon-plus"></i>
+                  <i class="ri-subtract-line ri-lg faq-icon-minus hidden"></i>
+                </div>
+              </button>
+              <div class="faq-content px-6 pb-6">
+                <p class="text-gray-700">
+                  Treatment duration varies significantly depending on the type
+                  and stage of cancer, as well as the specific treatment
+                  approach. Some treatments may last a few weeks, while others
+                  continue for several months. Your oncologist will provide a
+                  detailed timeline during your consultation and adjust as
+                  needed based on your response to treatment.
+                </p>
+              </div>
+            </div>
+            <!-- FAQ Item 3 -->
+            <div class="bg-white rounded-lg shadow-sm overflow-hidden faq-item">
+              <button
+                class="w-full flex justify-between items-center p-6 text-left focus:outline-none faq-toggle"
+              >
+                <h3 class="text-lg font-medium text-gray-900">
+                  Does insurance cover cancer treatments?
+                </h3>
+                <div
+                  class="w-6 h-6 flex items-center justify-center text-primary"
+                >
+                  <i class="ri-add-line ri-lg faq-icon-plus"></i>
+                  <i class="ri-subtract-line ri-lg faq-icon-minus hidden"></i>
+                </div>
+              </button>
+              <div class="faq-content px-6 pb-6">
+                <p class="text-gray-700">
+                  Most insurance plans cover cancer treatments, but coverage
+                  varies by provider and policy. Our financial counselors will
+                  work with you to verify your insurance coverage, explain any
+                  out-of-pocket costs, and help identify financial assistance
+                  programs if needed. We recommend contacting your insurance
+                  provider directly to understand your specific coverage for
+                  cancer treatments.
+                </p>
+              </div>
+            </div>
+            <!-- FAQ Item 4 -->
+            <div class="bg-white rounded-lg shadow-sm overflow-hidden faq-item">
+              <button
+                class="w-full flex justify-between items-center p-6 text-left focus:outline-none faq-toggle"
+              >
+                <h3 class="text-lg font-medium text-gray-900">
+                  What side effects can I expect from treatment?
+                </h3>
+                <div
+                  class="w-6 h-6 flex items-center justify-center text-primary"
+                >
+                  <i class="ri-add-line ri-lg faq-icon-plus"></i>
+                  <i class="ri-subtract-line ri-lg faq-icon-minus hidden"></i>
+                </div>
+              </button>
+              <div class="faq-content px-6 pb-6">
+                <p class="text-gray-700">
+                  Side effects vary depending on the treatment type, dosage, and
+                  individual factors. Common side effects may include fatigue,
+                  nausea, hair loss, and decreased blood counts. Our team will
+                  thoroughly discuss potential side effects before treatment
+                  begins and provide strategies to manage them effectively. We
+                  also offer supportive care services to help minimize and
+                  address side effects throughout your treatment.
+                </p>
+              </div>
+            </div>
+            <!-- FAQ Item 5 -->
+            <div class="bg-white rounded-lg shadow-sm overflow-hidden faq-item">
+              <button
+                class="w-full flex justify-between items-center p-6 text-left focus:outline-none faq-toggle"
+              >
+                <h3 class="text-lg font-medium text-gray-900">
+                  Can I get a second opinion at your center?
+                </h3>
+                <div
+                  class="w-6 h-6 flex items-center justify-center text-primary"
+                >
+                  <i class="ri-add-line ri-lg faq-icon-plus"></i>
+                  <i class="ri-subtract-line ri-lg faq-icon-minus hidden"></i>
+                </div>
+              </button>
+              <div class="faq-content px-6 pb-6">
+                <p class="text-gray-700">
+                  Yes, we welcome patients seeking second opinions. Our
+                  specialists will review your medical records, diagnostic
+                  tests, and current treatment plan to provide an independent
+                  assessment. Second opinions can help confirm a diagnosis,
+                  explore additional treatment options, or provide peace of mind
+                  about your current care plan. Contact our office to schedule a
+                  second opinion consultation.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white pt-16 pb-8">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+          <!-- Column 1 -->
+          <div>
+            <h1 class="text-2xl font-['Pacifico'] text-white mb-6">logo</h1>
+            <p class="text-gray-400 mb-6">
+              Providing compassionate and comprehensive cancer care with a focus
+              on personalized treatment plans and innovative therapies.
+            </p>
+            <div class="flex space-x-4">
+              <a
+                href="#"
+                class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-800 hover:bg-primary transition"
+              >
+                <i class="ri-facebook-fill"></i>
+              </a>
+              <a
+                href="#"
+                class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-800 hover:bg-primary transition"
+              >
+                <i class="ri-twitter-fill"></i>
+              </a>
+              <a
+                href="#"
+                class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-800 hover:bg-primary transition"
+              >
+                <i class="ri-linkedin-fill"></i>
+              </a>
+              <a
+                href="#"
+                class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-800 hover:bg-primary transition"
+              >
+                <i class="ri-instagram-fill"></i>
+              </a>
+            </div>
+          </div>
+          <!-- Column 2 -->
+          <div>
+            <h3 class="text-lg font-semibold mb-6">Quick Links</h3>
+            <ul class="space-y-3">
+              <li>
+                <a href="#" class="text-gray-400 hover:text-white transition"
+                  >Home</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#about"
+                  class="text-gray-400 hover:text-white transition"
+                  >About Us</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#treatments"
+                  class="text-gray-400 hover:text-white transition"
+                  >Treatments</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#doctors"
+                  class="text-gray-400 hover:text-white transition"
+                  >Our Doctors</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#testimonials"
+                  class="text-gray-400 hover:text-white transition"
+                  >Patient Stories</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#blog"
+                  class="text-gray-400 hover:text-white transition"
+                  >Blog & News</a
+                >
+              </li>
+              <li>
+                <a href="#" class="text-gray-400 hover:text-white transition"
+                  >Contact Us</a
+                >
+              </li>
+            </ul>
+          </div>
+          <!-- Column 3 -->
+          <div>
+            <h3 class="text-lg font-semibold mb-6">Our Services</h3>
+            <ul class="space-y-3">
+              <li>
+                <a href="#" class="text-gray-400 hover:text-white transition"
+                  >Medical Oncology</a
+                >
+              </li>
+              <li>
+                <a href="#" class="text-gray-400 hover:text-white transition"
+                  >Radiation Therapy</a
+                >
+              </li>
+              <li>
+                <a href="#" class="text-gray-400 hover:text-white transition"
+                  >Surgical Oncology</a
+                >
+              </li>
+              <li>
+                <a href="#" class="text-gray-400 hover:text-white transition"
+                  >Immunotherapy</a
+                >
+              </li>
+              <li>
+                <a href="#" class="text-gray-400 hover:text-white transition"
+                  >Genetic Counseling</a
+                >
+              </li>
+              <li>
+                <a href="#" class="text-gray-400 hover:text-white transition"
+                  >Supportive Care</a
+                >
+              </li>
+              <li>
+                <a href="#" class="text-gray-400 hover:text-white transition"
+                  >Clinical Trials</a
+                >
+              </li>
+            </ul>
+          </div>
+          <!-- Column 4 -->
+          <div>
+            <h3 class="text-lg font-semibold mb-6">Contact Information</h3>
+            <ul class="space-y-4">
+              <li class="flex items-start">
+                <div
+                  class="w-6 h-6 flex items-center justify-center text-primary mt-1 mr-3"
+                >
+                  <i class="ri-map-pin-line"></i>
+                </div>
+                <span class="text-gray-400">
+                  123 Medical Center Drive<br />
+                  Suite 200<br />
+                  New York, NY 10001
+                </span>
+              </li>
+              <li class="flex items-start">
+                <div
+                  class="w-6 h-6 flex items-center justify-center text-primary mt-1 mr-3"
+                >
+                  <i class="ri-phone-line"></i>
+                </div>
+                <span class="text-gray-400">
+                  (212) 555-7890<br />
+                  Emergency: (212) 555-9999
+                </span>
+              </li>
+              <li class="flex items-start">
+                <div
+                  class="w-6 h-6 flex items-center justify-center text-primary mt-1 mr-3"
+                >
+                  <i class="ri-mail-line"></i>
+                </div>
+                <span class="text-gray-400">
+                  info@oncologycenter.com<br />
+                  appointments@oncologycenter.com
+                </span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="mt-12 pt-8 border-t border-gray-800">
+          <div class="flex flex-col md:flex-row justify-between items-center">
+            <p class="text-gray-400 text-sm mb-4 md:mb-0">
+              © 2025 Oncology Care Center. All rights reserved.
+            </p>
+            <div class="flex space-x-6">
+              <a href="#" class="text-gray-400 hover:text-white text-sm"
+                >Privacy Policy</a
+              >
+              <a href="#" class="text-gray-400 hover:text-white text-sm"
+                >Terms of Service</a
+              >
+              <a href="#" class="text-gray-400 hover:text-white text-sm"
+                >Sitemap</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const headerBookBtn = document.getElementById("headerBookBtn");
+        const heroBookBtn = document.getElementById("heroBookBtn");
+        const appointmentModal = document.getElementById("appointmentModal");
+        const confirmationModal = document.getElementById("confirmationModal");
+        const closeModal = document.getElementById("closeModal");
+        const cancelBtn = document.getElementById("cancelBtn");
+        const confirmationCloseBtn = document.getElementById("confirmationCloseBtn");
+        const appointmentForm = document.getElementById("appointmentForm");
+        function openModal() {
+          appointmentModal.classList.remove("hidden");
+          document.body.style.overflow = "hidden";
+        }
+        function closeModal() {
+          appointmentModal.classList.add("hidden");
+          document.body.style.overflow = "";
+        }
+        function showConfirmation() {
+          appointmentModal.classList.add("hidden");
+          confirmationModal.classList.remove("hidden");
+        }
+        function closeConfirmation() {
+          confirmationModal.classList.add("hidden");
+          document.body.style.overflow = "";
+          appointmentForm.reset();
+        }
+        headerBookBtn.addEventListener("click", openModal);
+        heroBookBtn.addEventListener("click", openModal);
+        closeModal.addEventListener("click", closeModal);
+        cancelBtn.addEventListener("click", closeModal);
+        confirmationCloseBtn.addEventListener("click", closeConfirmation);
+        appointmentForm.addEventListener("submit", function (e) {
+          e.preventDefault();
+          showConfirmation();
+        });
+        window.addEventListener("click", function (e) {
+          if (e.target === appointmentModal) {
+            closeModal();
+          }
+          if (e.target === confirmationModal) {
+            closeConfirmation();
+          }
+        });
+        const modalDate = document.getElementById("modalDate");
+        const today = new Date().toISOString().split("T")[0];
+        modalDate.min = today;
+        // FAQ Accordion
+        const faqToggles = document.querySelectorAll(".faq-toggle");
+        faqToggles.forEach((toggle) => {
+          toggle.addEventListener("click", function () {
+            const faqItem = this.closest(".faq-item");
+            const content = faqItem.querySelector(".faq-content");
+            const iconPlus = faqItem.querySelector(".faq-icon-plus");
+            const iconMinus = faqItem.querySelector(".faq-icon-minus");
+            // Toggle active class
+            content.classList.toggle("active");
+            // Toggle icons
+            iconPlus.classList.toggle("hidden");
+            iconMinus.classList.toggle("hidden");
+          });
+        });
+      });
+      document.addEventListener("DOMContentLoaded", function () {
+        // Testimonial Slider
+        const container = document.getElementById("testimonial-container");
+        const dots = document.querySelectorAll(".testimonial-dot");
+        const prevBtn = document.getElementById("prev-testimonial");
+        const nextBtn = document.getElementById("next-testimonial");
+        const testimonials = document.querySelectorAll(".testimonial-card");
+        let currentIndex = 0;
+        const testimonialWidth = 100; // Percentage width
+        function updateSlider() {
+          const offset = -currentIndex * testimonialWidth;
+          container.style.transform = `translateX(${offset}%)`;
+          // Update dots
+          dots.forEach((dot, index) => {
+            if (index === currentIndex) {
+              dot.classList.add("bg-primary");
+              dot.classList.remove("bg-gray-300");
+            } else {
+              dot.classList.remove("bg-primary");
+              dot.classList.add("bg-gray-300");
+            }
+          });
+        }
+        // Next button
+        nextBtn.addEventListener("click", function () {
+          if (currentIndex < testimonials.length - 1) {
+            currentIndex++;
+            updateSlider();
+          }
+        });
+        // Previous button
+        prevBtn.addEventListener("click", function () {
+          if (currentIndex > 0) {
+            currentIndex--;
+            updateSlider();
+          }
+        });
+        // Dot navigation
+        dots.forEach((dot, index) => {
+          dot.addEventListener("click", function () {
+            currentIndex = index;
+            updateSlider();
+          });
+        });
+        // Initialize slider
+        updateSlider();
+      });
+    </script>
+  </body>
+</html>
